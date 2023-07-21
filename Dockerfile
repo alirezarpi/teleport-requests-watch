@@ -1,6 +1,6 @@
 FROM alpine:latest
 
-WORKDIR /trc
+WORKDIR /trw
 
 RUN apk update && \
       apk add --no-cache curl && \
@@ -8,6 +8,6 @@ RUN apk update && \
       chmod +x ./kubectl && \
       mv ./kubectl /usr/local/bin/kubectl
 
-COPY ./trc.sh /trc/trc.sh
+COPY ./trw.sh /trw/trw.sh
 
-ENTRYPOINT /trc/trc.sh
+ENTRYPOINT /trc/trw.sh
