@@ -42,15 +42,15 @@ create_slack_message() {
                     "value": "$uuid"
                 },
                 {
-                    "title": "REQUESTOR",
+                    "title": "Requestor",
                     "value": "<@$requestor>"
                 },
                 {
-                    "title": "ROLE",
+                    "title": "Role",
                     "value": "$role"
                 },
                 {
-                    "title": "reason",
+                    "title": "Reason",
                     "value": $reason
                 }
             ],
