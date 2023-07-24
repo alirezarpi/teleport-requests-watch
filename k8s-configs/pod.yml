@@ -8,3 +8,26 @@ spec:
   containers:
     - name: teleport-sidepod
       image: alirezarpi/teleport-sidepod:latest
+      env:
+        - name: SLACK_URI
+          valueFrom:
+            secretKeyRef:
+              name: trw-secrets
+              key: SLACK_URI
+        - name: SLACK_ENABLE
+          valueFrom:
+            configMapKeyRef:
+              name: trw-configmap
+              key: SLACK_ENABLE
+        - name: SLACK_CHANNEL
+          valueFrom:
+            configMapKeyRef:
+              name: trw-configmap
+              key: SLACK_CHANNEL
+        - name: SLACK_BUTTON_URL
+          valueFrom:
+            configMapKeyRef:
+              name: trw-configmap
+              key: SLACK_BUTTON_URL
+
+  restartPolicy: Never

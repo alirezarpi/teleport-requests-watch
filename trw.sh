@@ -10,6 +10,7 @@ JIRA_PASS=$JIRA_PASS
 SLACK_ENABLE=$SLACK_ENABLE
 SLACK_URI=$SLACK_URI
 SLACK_CHANNEL=$SLACK_CHANNEL
+SLACK_BUTTON_URL=$SLACK_BUTTON_URL
 
 is_processed() {
 	grep -q "$1" ./processed_requests.txt 2> /dev/null
@@ -55,25 +56,12 @@ create_slack_message() {
             ],
             "actions": [
                 {
-                    "name": "approve",
-                    "text": "Approve",
+                    "name": "req_approval",
+                    "text": "Approve/Deny",
                     "type": "button",
                     "style": "primary",
-                    "url": "https://your-approve-url.com",
-                    "confirm": {
-                        "title": "Are you sure?",
-                        "text": "Please double-check as this gives permissions to PROD resources",
-                        "ok_text": "Yes",
-                        "dismiss_text": "No"
-                    }
+                    "url": "$SLACK_BUTTON_URL?REQ_UUID=$uuid",
                 },
-                {
-                    "name": "deny",
-                    "text": "Deny",
-                    "type": "button",
-                    "style": "danger",
-                    "url": "https://your-deny-url.com"
-                }
             ]
         }
     ]
