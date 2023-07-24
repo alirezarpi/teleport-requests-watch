@@ -10,4 +10,4 @@ RUN apk update && \
 
 COPY ./trw.sh /trw/trw.sh
 
-ENTRYPOINT /trc/trw.sh
+ENTRYPOINT /trw/trw.sh

@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: teleport-sidepod
+  name: teleport-request-watch
   namespace: teleport
 spec:
   serviceAccountName: teleport-sidepod
   containers:
     - name: teleport-sidepod
       image: alirezarpi/teleport-sidepod:latest
-      command: ["/trc/trc.sh"]
+      command: ["/trw/trw.sh"]
