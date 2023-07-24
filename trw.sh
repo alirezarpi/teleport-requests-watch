@@ -8,9 +8,8 @@ JIRA_USER=$JIRA_USER
 JIRA_PASS=$JIRA_PASS
 
 SLACK_ENABLE=$JIRA_ENABLE
-SLACK_HOST=$JIRA_HOST
-SLACK_USER=$JIRA_USER
-SLACK_PASS=$JIRA_PASS
+SLACK_URI=$JIRA_URI
+SLACK_CHANNEL=$JIRA_CHANNEL
 
 is_processed() {
 	grep -q "$1" ./processed_requests.txt 2> /dev/null
@@ -42,6 +41,7 @@ while true; do
 				if [[ "$SLACK_ENABLE" == "true" ]]; then
 					# Create a message here to be Slack Payload
 					echo "slack here"
+
 				fi
 				echo "$uuid" >> processed_requests.txt
 			fi

@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: trw-configmap
+  namespace: teleport
+data:
+  SLACK_ENABLE: 'true'
+  SLACK_CHANNEL: '#access-requests'
