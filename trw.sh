@@ -75,10 +75,13 @@ create_slack_message() {
 			]
 		},
 		{
+			"type": "divider"
+		},
+		{
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": "If you want to *APPROVE* this Request"
+				"text": "If you want to *Approve* this Request"
 			},
 			"accessory": {
 				"type": "button",
@@ -89,7 +92,7 @@ create_slack_message() {
 				},
 				"value": "approve",
 				"style": "primary",
-				"url": "$SLACK_BUTTON_URL?REQ_UUID=$uuid&REQ_REASON=$plain_text_input&REQ_APPROVAL=approve",
+				"url": "$SLACK_BUTTON_URL?REQ_UUID=$uuid&REQ_APPROVAL=approve",
 				"action_id": "button-action"
 			}
 		},
@@ -97,7 +100,7 @@ create_slack_message() {
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": "If you want to *DENY* this Request"
+				"text": "If you want to *Deny* this Request"
 			},
 			"accessory": {
 				"type": "button",
@@ -108,7 +111,7 @@ create_slack_message() {
 				},
 				"style": "danger",
 				"value": "deny",
-				"url": "$SLACK_BUTTON_URL?REQ_UUID=$uuid&REQ_REASON=$plain_text_input&REQ_APPROVAL=deny",
+				"url": "$SLACK_BUTTON_URL?REQ_UUID=$uuid&REQ_APPROVAL=deny",
 				"action_id": "button-action"
 			}
 		}
