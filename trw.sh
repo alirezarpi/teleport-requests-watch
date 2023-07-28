@@ -23,48 +23,96 @@ send_slack_message() {
 
 create_slack_message() {
     local uuid="$1"
-    local requestor="$2"
-    local role="$3"
-    local reason="$4"
+    local requester="$2"
+    local role=$(echo $3 | sed 's/\"//g')
+    local reason=$(echo $4 | sed 's/\"//g')
 
     message=$(cat <<EOF
 {
-    "channel": "$SLACK_CHANNEL",
-    "username": "Teleport Requests",
-    "text": "New Teleport Resource Requested",
-    "attachments": [
-        {
-            "text": "Please either Approve or Deny, Regarding the reason",
-            "color": "#36a64f",
-            "fields": [
-                {
-                    "title": "UUID",
-                    "value": "$uuid"
-                },
-                {
-                    "title": "Requestor",
-                    "value": "<@$requestor>"
-                },
-                {
-                    "title": "Role",
-                    "value": "$role"
-                },
-                {
-                    "title": "Reason",
-                    "value": $reason
-                }
-            ],
-            "actions": [
-                {
-                    "name": "req_approval",
-                    "text": "Approve/Deny",
-                    "type": "button",
-                    "style": "primary",
-                    "url": "$SLACK_BUTTON_URL?REQ_UUID=$uuid",
-                },
-            ]
-        }
-    ]
+	"blocks": [
+		{
+			"type": "header",
+			"text": {
+				"type": "plain_text",
+				"text": "New Teleport Resource Requested",
+				"emoji": true
+			}
+		},
+		{
+			"type": "section",
+			"fields": [
+				{
+					"type": "mrkdwn",
+					"text": "*UUID:* \n$uuid"
+				}
+			]
+		},
+		{
+			"type": "section",
+			"fields": [
+				{
+					"type": "mrkdwn",
+					"text": "*Reason:* \n$reason"
+				}
+			]
+		},
+		{
+			"type": "section",
+			"fields": [
+				{
+					"type": "mrkdwn",
+					"text": "*Requester:* \n<@$requester>"
+				}
+			]
+		},
+		{
+			"type": "section",
+			"fields": [
+				{
+					"type": "mrkdwn",
+					"text": "*Role:* \n$role"
+				}
+			]
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "If you want to *APPROVE* this Request"
+			},
+			"accessory": {
+				"type": "button",
+				"text": {
+					"type": "plain_text",
+					"text": "Approve",
+					"emoji": true
+				},
+				"value": "approve",
+				"style": "primary",
+				"url": "$SLACK_BUTTON_URL?REQ_UUID=$uuid&REQ_REASON=$plain_text_input&REQ_APPROVAL=approve",
+				"action_id": "button-action"
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "If you want to *DENY* this Request"
+			},
+			"accessory": {
+				"type": "button",
+				"text": {
+					"type": "plain_text",
+					"text": "Deny",
+					"emoji": true
+				},
+				"style": "danger",
+				"value": "deny",
+				"url": "$SLACK_BUTTON_URL?REQ_UUID=$uuid&REQ_REASON=$plain_text_input&REQ_APPROVAL=deny",
+				"action_id": "button-action"
+			}
+		}
+	]
 }
 EOF
     )
@@ -84,7 +132,7 @@ while true; do
 			echo "-----------------------------"
 			items=($line)
 			uuid=${items[0]}
-			requestor=${items[1]}
+			requester=${items[1]}
 			role=${items[2]}
 			reason=${items[3]}
 			if is_processed "$uuid"; then
@@ -98,7 +146,7 @@ while true; do
 				if [ "$SLACK_ENABLE" == "true" ]; then
 					# Create a message here to be Slack Payload
 					echo "[INFO] Sending Slack Notification for $uuid"
-					create_slack_message $uuid $requestor $role $reason
+					create_slack_message $uuid $requester $role $reason
 				fi
 				echo "$uuid" >> processed_requests.txt
 			fi
