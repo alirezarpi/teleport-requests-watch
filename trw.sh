@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 SLEEP_SEC=10
 
@@ -24,7 +24,7 @@ send_slack_message() {
 create_slack_message() {
     local uuid="$1"
     local requester="$2"
-    local role=$(echo $3 | sed 's/\"//g')
+    local role=$(echo $3 | sed 's/\"//g' | sed 's/roles=//')
     local reason=$(echo $4 | sed 's/\"//g')
 
     message=$(cat <<EOF
@@ -92,7 +92,7 @@ create_slack_message() {
 				},
 				"value": "approve",
 				"style": "primary",
-				"url": "$SLACK_BUTTON_URL?REQ_UUID=$uuid&REQ_APPROVAL=approve",
+				"url": "$SLACK_BUTTON_URL?REQ_UUID=$uuid&REQ_ROLE=$role&REQ_APPROVAL=approve",
 				"action_id": "button-action"
 			}
 		},
@@ -111,7 +111,7 @@ create_slack_message() {
 				},
 				"style": "danger",
 				"value": "deny",
-				"url": "$SLACK_BUTTON_URL?REQ_UUID=$uuid&REQ_APPROVAL=deny",
+				"url": "$SLACK_BUTTON_URL?REQ_UUID=$uuid&REQ_ROLE=$role&REQ_APPROVAL=deny",
 				"action_id": "button-action"
 			}
 		}
